@@ -87,7 +87,9 @@ class Submission extends MY_Controller {
 			$id = $this->input->post("fk_submission_id");
 			$data['status'] = 1;
 			if($this->submission_model->updateWhere('id in '.$id, $data)){
-				$pesan['messages'] = 'Data is saved';
+				$id = str_replace('(', '', $id);
+				$id = str_replace(')', '', $id);
+				$pesan['messages'] = $id.' is submitted';
 				$pesan['status'] = true;
 			}else{
 				$pesan['messages'] = 'Error!';
