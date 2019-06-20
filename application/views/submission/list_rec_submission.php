@@ -106,6 +106,7 @@
    });
    cto_loading_hide();
    table = dataTable;
+   table.column( 2 ).visible( false );
   }
   
   
@@ -147,7 +148,7 @@
   });
   
   // var table = $('#example1').DataTable();
-	// // table.column( 0 ).visible( false );
+	//table.column( 2 ).visible( false );
 	// table.on( 'order.dt search.dt', function () {
         // t.column(0, {search:'applied', order:'applied'}).nodes().each( function (cell, i) {
             // cell.innerHTML = i+1;

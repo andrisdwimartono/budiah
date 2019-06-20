@@ -147,7 +147,7 @@ class Submission_model extends MY_Model
 	}
 	
 	public function nAllDataHistory(){
-		$query = $this->db->query('select count(*) as n_data from '.$this->_table_name.' where status in (-1, 1) and is_active != -1');
+		$query = $this->db->query('select count(*) as n_data from '.$this->_table_name.' where status in (-1, 1, 2) and is_active != -1');
 		return $query->row()->n_data;
 	}
 	
@@ -156,7 +156,7 @@ class Submission_model extends MY_Model
 		select subs.id, subs.code_id, subs.address, coalesce(subs.house_hold, subs.potentials*3) as house_hold, subs.potentials, coalesce(subs.odp, CEILING(subs.potentials/8.0)) as odp, case when subs.potentials <= 2 then \'Low\' when subs.potentials <= 3 then \'Medium\' else \'High\' end as demand, sto.name as fk_sto_id, \'x\' as details, coalesce(dict.name, subs.status) status, coalesce(subs.updated_time, subs.created_time) as updated_time from '.$this->_table_name.' as subs
 		inner join b_sto sto on sto.id = subs.fk_sto_id
 		left join cto_dict dict on dict.code = subs.status and dict.type = \'STATUS_RECOM\'
-		where subs.status in (-1, 1) and subs.is_active != -1) subs WHERE 1=1';
+		where subs.status in (-1, 1, 2) and subs.is_active != -1) subs WHERE 1=1';
 		
         if ($keyword != null){
 			 $querying .= ' and (subs.code_id like "%'.$keyword.'%" OR subs.address like "%'.$keyword.'%" OR subs.fk_sto_id like "%'.$keyword.'%" OR subs.demand like "%'.$keyword.'%" OR subs.status like "%'.$keyword.'%")';
@@ -179,7 +179,7 @@ class Submission_model extends MY_Model
 		select subs.id, subs.code_id, subs.address, coalesce(subs.house_hold, subs.potentials*3) as house_hold, subs.potentials, coalesce(subs.odp, CEILING(subs.potentials/8.0)) as odp, case when subs.potentials <= 2 then \'Low\' when subs.potentials <= 3 then \'Medium\' else \'High\' end as demand, sto.name as fk_sto_id, \'x\' as details, coalesce(dict.name, subs.status) status, coalesce(subs.updated_time, subs.created_time) as updated_time from '.$this->_table_name.' as subs
 		inner join b_sto sto on sto.id = subs.fk_sto_id
 		left join cto_dict dict on dict.code = subs.status and dict.type = \'STATUS_RECOM\'
-		where subs.status in (-1, 1) and subs.is_active != -1) subs WHERE 1=1';
+		where subs.status in (-1, 1, 2) and subs.is_active != -1) subs WHERE 1=1';
 		
         if ($keyword != null){
             $querying .= ' and (subs.code_id like "%'.$keyword.'%" OR subs.address like "%'.$keyword.'%" OR subs.fk_sto_id like "%'.$keyword.'%" OR subs.demand like "%'.$keyword.'%" OR subs.status like "%'.$keyword.'%")';

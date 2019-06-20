@@ -11,10 +11,10 @@
         <ul class="nav navbar-nav">
 		<span style="font-size:12pt;padding-top:20px;" class="pull-left"><p style="word-wrap:break-word;">Welcome, <?php echo $_SESSION['name']; ?></p></span>
           <!-- Notifications: style can be found in dropdown.less -->
-          <li class="dropdown notifications-menu">
+          <li class="dropdown notifications-menu col-sm-2">
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-              <i class="fa fa-bell-o"></i>
-              <span class="label label-warning" id="cto_notification_exist"></span>
+              <i class="fa fa-bell-o fa-2x"></i>
+              <span class="label label-danger red" id="cto_notification_exist" style="font-size:14px"></span>
             </a>
             <ul class="dropdown-menu">
               <li class="header"></li>

@@ -114,6 +114,7 @@ function format ( d, id ) {
    });
    cto_loading_hide();
    table = dataTable;
+   table.column( 2 ).visible( false );
   }
   
   // Add event listener for opening and closing details
