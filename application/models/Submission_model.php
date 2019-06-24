@@ -792,9 +792,10 @@ class Submission_model extends MY_Model
 
 			UNION
 
-			SELECT odp.fk_submission_id id, 'Add ODP' status, 1.5 status_code, odp.created_time updated_time, user.name name, concat(odp.id_deployer, \";\", odp.LABEL_GOLIVE) odp_name FROM b_odp odp 
+			SELECT odp.fk_submission_id id, GROUP_CONCAT(CONCAT('ID Deployer ', odp.id_deployer,'ODP Name ', odp.LABEL_GOLIVE)) status, 1.5 status_code, odp.created_time updated_time, user.name name, concat(odp.id_deployer, \";\", odp.LABEL_GOLIVE) odp_name FROM b_odp odp 
 			LEFT JOIN cto_user user ON user.id = odp.created_by
 			WHERE odp.fk_submission_id = ".$id."
+			GROUP BY odp.fk_submission_id
 			) subm
 
 			LEFT JOIN (SELECT odp.fk_submission_id, img.status, count(*) jml FROM b_img_progress img
