@@ -801,7 +801,8 @@ class Submission_model extends MY_Model
 			INNER JOIN b_odp odp ON odp.id = img.fk_odp_id
 			WHERE odp.fk_submission_id = ".$id." 
 			GROUP BY odp.fk_submission_id, img.status) img ON img.fk_submission_id = subm.id AND img.status = subm.status_code
-
+			
+			GROUP BY subm.status_code
 			ORDER BY subm.status_code DESC");
 		$result = array();
 		foreach($query->result_array() as $row){

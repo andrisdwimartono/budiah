@@ -147,6 +147,11 @@ function format ( d, id ) {
 	$.redirect("<?php echo base_url(); ?>submission/viewSubmission", {'fk_submission_id': id, 'cto_url' : 'submission/history'});
   });
   
+  $(document).on('click', '.update2', function(){
+	cto_loading_show();
+   var id = $(this).attr("data-id");
+	$.redirect("<?php echo base_url(); ?>submission/log_transaksi", {'fk_submission_id': id, 'cto_url' : 'submission/history'});
+  });
  
  function cto_approve(code_id, id, status){
 	 if(status){

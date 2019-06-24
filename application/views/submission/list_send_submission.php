@@ -146,6 +146,12 @@ function format ( d, id ) {
 	$.redirect("<?php echo base_url(); ?>submission/viewSubmission", {'fk_submission_id': id, 'cto_url' : 'submission/history'});
   });
   
+  $(document).on('click', '.update2', function(){
+	cto_loading_show();
+   var id = $(this).attr("data-id");
+	$.redirect("<?php echo base_url(); ?>submission/log_transaksi", {'fk_submission_id': id, 'cto_url' : 'submission/history'});
+  });
+  
   $(document).on('click', '.btn_submit', function(){
 	  if(confirm("Apakah anda yakin submit?")){
 		cto_loading_show();

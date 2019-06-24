@@ -10,7 +10,7 @@
             <div class="box-header">
               <i class="fa fa-wpforms"></i>
 
-              <h4 class="box-title">Log Transaksi</h4>
+              <h4 class="box-title">Log Transaksi<?php echo " ".$code_id;?></h4>
               <!-- tools box -->
               <div class="pull-right box-tools">
                 <button type="button" class="btn btn-sm" data-widget="collapse"><i class="fa fa-minus"></i>
@@ -28,8 +28,24 @@
 				</div>
 				<!-- /.messages box-->
               <!-- CTOF Content here-->
-				<div id="cto_log">
-				
+			  <div class="box" style="background-color:#c6c6c6;">
+					<div class="form-group row" id="ctof_address">
+							<div class="col-sm-2">
+								<b><?php if(isset($code_id)){echo "".$code_id."";} ?></b>
+							</div>
+							<div class="col-sm-5">
+								<i><?php if(isset($address)){echo "".$address."";} ?></i>
+							</div>
+							
+							<div class="col-sm-2">
+								<b>Completion :</b> <?php if(isset($percentage)){if($percentage == 100){echo "<font class=\"btn-success\">".number_format($percentage, 2)." %</font>";}else{echo "<font class=\"btn-warning\">".number_format($percentage, 2)." %</font>";}} ?>
+							</div>
+							
+					</div>
+					<div class="form-group row" id="cto_log">
+					
+					
+					</div>
 				</div>
 				 <!-- /.modal start -->
 					<div class="modal modal-info fade" id="modal-info">
@@ -89,7 +105,15 @@
 		} 
 		opt += '</ul>'; 
 		document.getElementById(cto_elementid).innerHTML = opt; 
-	} 
+	}
+	
+	cto_data_transaksi("<?php echo base_url(); ?>submission/cto_getprogress");
+    function cto_data_transaksi(addr){ 
+		
+		var logt = ajaxGetValue(addr, <?php if(isset($fk_submission_id)){echo $fk_submission_id; } else{echo 0;}?>); 
+		
+		document.getElementById("").innerHTML = opt; 
+	}
 
 
 	function ajaxGetValue(addr, param){ 
