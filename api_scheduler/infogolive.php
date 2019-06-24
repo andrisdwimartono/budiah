@@ -50,7 +50,7 @@ foreach($array['data'] as $x){
 				
 			// }
 			//jika status berubah dari #N/A jadi live, maka langsung message
-			if($x['STATUS_GOLIVE'] == "go live" && (strpos("x".$x['LABEL_GOLIVE'],"ODP-") == 1 && checkODPidStatus($x['No'], $x['STATUS_GOLIVE'], $x['LABEL_GOLIVE'], $CON)){
+			if($x['STATUS_GOLIVE'] == "GOLIVE" && (strpos("x".$x['LABEL_GOLIVE'],"ODP-") == 1 && checkODPidStatus($x['No'], $x['STATUS_GOLIVE'], $x['LABEL_GOLIVE'], $CON))){
 				//tele live
 				echo "live";
 				KirimPerintahCurl(array('chat_id' => 1, 'textmessage' => $x['No'], 'data_odp' => $x), $CON);
@@ -90,7 +90,7 @@ function checkODPidExist($id, $CON){
 
 function checkODPidStatus($id, $statuslive, $labelgolive, $CON){
 	$jml = 0;
-	$query = mysqli_query($CON,"SELECT count(*) jml FROM `b_odp_api` odp WHERE odp.id = ".$id." and (odp.status_golive != 'go live' or odp.LABEL_GOLIVE not like '%ODP-')");
+	$query = mysqli_query($CON,"SELECT count(*) jml FROM `b_odp_api` odp WHERE odp.id = ".$id." and (odp.status_golive != 'GOLIVE' AND odp.LABEL_GOLIVE not like '%ODP-%')");
 	while($row = mysqli_fetch_assoc($query)){
 		$jml = $row['jml'];
 	}
