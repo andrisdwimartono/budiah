@@ -451,7 +451,7 @@ class Submission extends MY_Controller {
 	
 	public function log_transaksi()
 	{
-		foreach($this->submission_model->getADataStatus($this->input->post("fk_submission_id")) as $x => $y){
+		foreach($this->submission_model->getADataStatusLogHistory($this->input->post("fk_submission_id")) as $x => $y){
 			$data[$x] = $y;
 		}
 		$data['fk_submission_id'] = $this->input->post("fk_submission_id");

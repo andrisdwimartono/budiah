@@ -811,6 +811,34 @@ class Submission_model extends MY_Model
 		return $result;
     }
 	
+	public function getADataStatusLogHistory($fk_submission_id){
+		$query = $this->db->query("select subs.id, subs.code_id, subs.coordinate, subs.address, subs.potentials, coalesce(subs.odp, CEILING(subs.potentials/8.0)) as odp, sto.name as sto_name, coalesce(dict.name, subs.status) status, coalesce(dictnext.name, subs.status+1) status_next, coalesce(case when subs.status = dictgolive.code then 100 else percen.percentage end, 0) percentage, coalesce(case when subs.status+1 = dictgolive.code then 100 else percen_onwork.percentage end, 0) percentage_onwork, coalesce(subs.updated_time, subs.created_time) as updated_time, odp_lab.LABEL_GOLIVE from b_submission as subs
+			inner join b_sto sto on sto.id = subs.fk_sto_id
+			left join cto_dict dict on dict.code = subs.status and dict.type = 'STATUS_RECOM'
+			left join cto_dict dictnext on dictnext.code = subs.status+1 and dictnext.type = 'STATUS_RECOM'
+			left join (SELECT dict.code, (dict.code-appr.appr)/jml.jml*100 percentage FROM `cto_dict` dict left join (SELECT count(*) jml FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code > 2) jml on 1=1 left join (SELECT code appr FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code = 2) appr on 1=1 where dict.code > 2 and dict.type = 'STATUS_RECOM') percen on percen.code = subs.status
+			left join (SELECT dict.code, (dict.code-appr.appr)/jml.jml*100 percentage FROM `cto_dict` dict left join (SELECT count(*) jml FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code > 2) jml on 1=1 left join (SELECT code appr FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code = 2) appr on 1=1 where dict.code > 2 and dict.type = 'STATUS_RECOM') percen_onwork on percen_onwork.code = subs.status+1
+			left join cto_dict dictgolive on dictgolive.type = 'STATUS_RECOM' and dictgolive.info = 'GOLIVE'
+			left join (SELECT GROUP_CONCAT(odp_lab.LABEL_GOLIVE) LABEL_GOLIVE, odp_lab.fk_submission_id FROM b_odp odp_lab group by odp_lab.fk_submission_id) odp_lab on odp_lab.fk_submission_id = subs.id
+			where subs.is_active != -1 and subs.id = ".$fk_submission_id);
+		foreach($query->result() as $row){
+			$result['id'] = $row->id;
+			$result['code_id'] = $row->code_id;
+			$result['coordinate'] = $row->coordinate;
+			$result['address'] = $row->address;
+			$result['potentials'] = $row->potentials;
+			$result['odp'] = $row->odp;
+			$result['sto_name'] = $row->sto_name;
+			$result['percentage'] = $row->percentage;
+			$result['percentage_onwork'] = $row->percentage_onwork;
+			$result['status'] = $row->status;
+			$result['status_next'] = $row->status_next;
+			$result['LABEL_GOLIVE'] = $row->LABEL_GOLIVE;
+			$result['updated_time'] = $row->updated_time;
+		}
+		return $result;
+	}
+	
 	public function getODPPhotoStatus($fk_submission_id, $status){
 		$query = $this->db->query("SELECT odp.id, subs.id fk_submission_id, odp.id_deployer, odp.LABEL_GOLIVE odp_name, subs.status, coalesce(img.img, 'default.png') img FROM b_odp odp
 		INNER JOIN b_submission subs ON subs.id = odp.fk_submission_id
