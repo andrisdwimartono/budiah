@@ -64,7 +64,7 @@ class Submission_model extends MY_Model
 		$query = $this->db->query($querying);
 		foreach($query->result() as $row){
 			$sub_array = array();
-			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
+			$sub_array[] = '<div class="update2" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="address">'.$row->address . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="house_hold">'.$row->house_hold . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="potentials">'.$row->potentials . '</div>';
@@ -132,7 +132,7 @@ class Submission_model extends MY_Model
 		$query = $this->db->query($querying);
 		foreach($query->result() as $row){
 			$sub_array = array();
-			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
+			$sub_array[] = '<div class="update2" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="address">'.$row->address . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="house_hold">'.$row->house_hold . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="potentials">'.$row->potentials . '</div>';
@@ -201,7 +201,7 @@ class Submission_model extends MY_Model
 		$query = $this->db->query($querying);
 		foreach($query->result() as $row){
 			$sub_array = array();
-			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
+			$sub_array[] = '<div class="update2" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="address">'.$row->address . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="house_hold">'.$row->house_hold . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="potentials">'.$row->potentials . '</div>';
@@ -275,7 +275,7 @@ class Submission_model extends MY_Model
 		$query = $this->db->query($querying);
 		foreach($query->result() as $row){
 			$sub_array = array();
-			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
+			$sub_array[] = '<div class="update2" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="address">'.$row->address . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="status">'.$row->status . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="percentage">'.number_format($row->percentage, 2) . ' %</div>';
@@ -368,7 +368,7 @@ class Submission_model extends MY_Model
 		$query = $this->db->query($querying);
 		foreach($query->result() as $row){
 			$sub_array = array();
-			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
+			$sub_array[] = '<div class="update2" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="address">'.$row->address . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="odp">'.$row->odp . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="fk_sto_id">'.$row->fk_sto_id . '</div>';
@@ -426,7 +426,7 @@ class Submission_model extends MY_Model
 		$query = $this->db->query($querying);
 		foreach($query->result() as $row){
 			$sub_array = array();
-			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
+			$sub_array[] = '<div class="update2" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="address">'.$row->address . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="house_hold">'.$row->house_hold . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="potentials">'.$row->potentials . '</div>';
@@ -499,7 +499,7 @@ class Submission_model extends MY_Model
 		$query = $this->db->query($querying);
 		foreach($query->result() as $row){
 			$sub_array = array();
-			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
+			$sub_array[] = '<div class="update2" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="address">'.$row->address . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="house_hold">'.$row->house_hold . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="potentials">'.$row->potentials . '</div>';
@@ -581,7 +581,7 @@ class Submission_model extends MY_Model
 		$query = $this->db->query($querying);
 		foreach($query->result() as $row){
 			$sub_array = array();
-			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
+			$sub_array[] = '<div class="update2" data-id="'.$row->id.'" data-column="code_id">'.$row->code_id . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="address">'.$row->address . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="odp">'.$row->odp . '</div>';
 			$sub_array[] = '<div class="update" data-id="'.$row->id.'" data-column="potentials">'.$row->potentials . '</div>';
@@ -774,4 +774,53 @@ class Submission_model extends MY_Model
 		return $this->db->affected_rows() ? true : false;
 	}
 	
+	public function getDataLogHistory($id){
+        $query = $this->db->query("SELECT CONCAT(COALESCE(subm.status, '-'), ' by ', COALESCE(subm.name, '-'), ' at ', COALESCE(DATE_FORMAT(subm.updated_time, '%d %M %Y %H:%i:%s'), '-')) status_text, CASE WHEN img.jml > 0 THEN CONCAT('<a href=\"#\" onclick=\"get_photo(', subm.id, ', ', subm.status_code,');\">photo</a> uploaded') ELSE '' END photo FROM (
+			SELECT subs.id, COALESCE(dict.name, subs.status) status, subs.status status_code, MIN(subs.updated_time) updated_time, user.name name, '' odp_name FROM b_submission subs
+			LEFT JOIN cto_dict dict ON dict.code = subs.status AND dict.type = 'STATUS_RECOM'
+			LEFT JOIN cto_user user ON user.id = COALESCE(subs.updated_by, subs.created_by)
+			WHERE subs.id = ".$id."
+			GROUP BY subs.status
+
+			UNION
+
+			SELECT subslog.id, COALESCE(dict.name, subslog.status) status, subslog.status status_code, MIN(subslog.updated_time) updated_time, user.name name, '' odp_name FROM b_submission_log subslog
+			LEFT JOIN cto_dict dict ON dict.code = subslog.status AND dict.type = 'STATUS_RECOM'
+			LEFT JOIN cto_user user ON user.id = COALESCE(subslog.updated_by, subslog.created_by)
+			WHERE subslog.id = ".$id." 
+			GROUP BY subslog.status
+
+			UNION
+
+			SELECT odp.fk_submission_id id, 'Add ODP' status, 1.5 status_code, odp.created_time updated_time, user.name name, concat(odp.id_deployer, \";\", odp.LABEL_GOLIVE) odp_name FROM b_odp odp 
+			LEFT JOIN cto_user user ON user.id = odp.created_by
+			WHERE odp.fk_submission_id = ".$id."
+			) subm
+
+			LEFT JOIN (SELECT odp.fk_submission_id, img.status, count(*) jml FROM b_img_progress img
+			INNER JOIN b_odp odp ON odp.id = img.fk_odp_id
+			WHERE odp.fk_submission_id = ".$id." 
+			GROUP BY odp.fk_submission_id, img.status) img ON img.fk_submission_id = subm.id AND img.status = subm.status_code
+
+			ORDER BY subm.status_code DESC");
+		$result = array();
+		foreach($query->result_array() as $row){
+			array_push($result, $row);
+		}
+		return $result;
+    }
+	
+	public function getODPPhotoStatus($fk_submission_id, $status){
+		$query = $this->db->query("SELECT odp.id, subs.id fk_submission_id, odp.id_deployer, odp.LABEL_GOLIVE odp_name, subs.status, coalesce(img.img, 'default.png') img FROM b_odp odp
+		INNER JOIN b_submission subs ON subs.id = odp.fk_submission_id
+		LEFT JOIN (SELECT MAX(imgl.id) id, imgl.fk_odp_id, imgl.status FROM b_img_progress imgl GROUP BY imgl.fk_odp_id, imgl.status) imglast ON imglast.fk_odp_id = odp.id AND imglast.status = ".$status."
+		LEFT JOIN b_img_progress img ON img.id = imglast.id
+		WHERE odp.fk_submission_id = ".$fk_submission_id);
+		$result = array();
+		foreach($query->result_array() as $row){
+			array_push($result, $row);
+			
+		}
+		return $result;
+	}
 }

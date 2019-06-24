@@ -449,6 +449,27 @@ class Submission extends MY_Controller {
 		echo json_encode($pesan);
 	}
 	
+	public function log_transaksi()
+	{
+		$data['fk_submission_id'] = 3726 ;
+		$this->view('submission/log_transaksi', $data);
+	}
+	
+	public function get_log_transaksi(){
+		$fk_submission_id = $this->input->post("data");
+		foreach($this->submission_model->getDataLogHistory($fk_submission_id) as $x => $y){
+			$data[$x] = $y;
+		}
+		
+		echo json_encode($data);
+	}
+	
+	public function getODPPhotoStatus(){
+		$fk_submission_id = $this->input->post("fk_submission_id");
+		$status = $this->input->post("status");
+		$data = $this->submission_model->getODPPhotoStatus($fk_submission_id, $status);
+		echo json_encode($data);
+	}
 	
 	public function KirimPerintahCurl($data){
 		$comp = $this->cto_company_model->getAData($_SESSION['fk_company_id']);
@@ -490,4 +511,6 @@ class Submission extends MY_Controller {
  
         return $datas;
     }
+	
+	
 }
