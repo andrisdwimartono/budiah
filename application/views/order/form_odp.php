@@ -242,19 +242,31 @@ $("input[name='odp']").TouchSpin({
 		cto_getValue(odp_num);
 		var cto_form = ''; 
 		for (i = 1; i <= odp_num; i++) { 
-			cto_form+="<div class=\"form-group\" id=\"ctof_fk_submission_id_"+i+"\">\n<input id=\"fk_submission_id\" type=\"hidden\" name=\"fk_submission_id\" class=\"form-control\" placeholder=\"submission\" <?php if(isset($fk_submission_id)){echo "value=\\\"".$fk_submission_id."\\\"";} ?>>\n<span class=\"help-block\" id=\"ctomesserror_fk_submission_id\"></span><label for=\"label_golive\" class=\"col-sm-2 control-label\">ODP Name<font style=\"color:red;\">*</font></label><div class=\"col-sm-2\"><input id=\"label_golive_"+i+"\" type=\"text\" name=\"label_golive\" class=\"form-control\" placeholder=\"OCT-TER-07YT\"><span class=\"help-block\" id=\"ctomesserror_label_golive\"></span></div><label for=\"id_deployer\" class=\"col-sm-2 control-label\">ID Deployer<font style=\"color:red;\">*</font></label><div class=\"col-sm-2\"><input id=\"id_deployer_"+i+"\" type=\"text\" name=\"id_deployer\" class=\"form-control\" placeholder=\"T08TR-UYR/ID\"><span class=\"help-block\" id=\"ctomesserror_id_deployer\"></span></div></div>";
+			cto_form+="<div class=\"form-group\" id=\"ctof_fk_submission_id_"+i+"\">\n<input id=\"fk_submission_id\" type=\"hidden\" name=\"fk_submission_id\" class=\"form-control\" placeholder=\"submission\" <?php if(isset($fk_submission_id)){echo "value=\\\"".$fk_submission_id."\\\"";} ?>>\n<span class=\"help-block\" id=\"ctomesserror_fk_submission_id\"></span><label for=\"label_golive\" class=\"col-sm-2 control-label\">ODP Name<font style=\"color:red;\">*</font></label><div class=\"col-sm-2\"><input id=\"label_golive_"+i+"\" type=\"text\" name=\"label_golive\" class=\"form-control\" placeholder=\"ODP-TER-07YT\"><span class=\"help-block\" id=\"ctomesserror_label_golive\"></span></div><label for=\"id_deployer\" class=\"col-sm-2 control-label\">ID Deployer<font style=\"color:red;\">*</font></label><div class=\"col-sm-2\"><input id=\"id_deployer_"+i+"\" type=\"text\" name=\"id_deployer\" class=\"form-control\" placeholder=\"T08TR-UYR/ID\"><span class=\"help-block\" id=\"ctomesserror_id_deployer\"></span></div></div>";
 		}
+
 		document.getElementById("cto_odp_form").innerHTML = cto_form;
-		cto_setValue(odp_num);
+		for (i = 1; i <= odp_num; i++) { 
+			//$("#label_golive_"+i).val('Hello...How are you?');
+			document.getElementById("label_golive_"+i).value = "ODP-<?php if(isset($sto_name)){echo "".$sto_name."";} ?>-";
+		}
+		//cto_setValue(odp_num);
 	}
 	
 	function cto_checkValue(odp_num){
 		var data = [];
 		data['status'] = true;
 		for (i = 1; i <= odp_num; i++) { 
+			var str = $('#label_golive_'+i).val();
+			var regex = RegExp('ODP-<?php if(isset($sto_name)){echo "".$sto_name."";} ?>-');
+			var result = regex.test(str);
 			if($('#label_golive_'+i).val() == "" || $('#id_deployer_'+i).val() == ""){
 				data['status'] = false;
 				data['messages'] = "Failed! Some requiered field is null!";
+				cto_messages_show(data);
+			}else if(!result){
+				data['status'] = false;
+				data['messages'] = "Failed! ODP Name pattern is wrong!";
 				cto_messages_show(data);
 			}
 		}

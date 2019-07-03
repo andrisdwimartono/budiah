@@ -22,6 +22,11 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+			<!-- messages box-->
+				<div class="" id="cto_messages">
+					
+				</div>
+				<!-- /.messages box-->
               <!-- CTOF Content here-->
 				<table id="example1" class="table table-bordered table-striped">
                 <thead>
@@ -34,6 +39,7 @@
                   <th>Demand</th>
 				  <th>STO</th>
 				  <th></th>
+				  <th>Action</th>
                 </tr>
                 </thead>
               </table>
@@ -82,32 +88,51 @@
 		return data;
 		}
 		
-
+	function fetch_data(){
+		cto_loading_show();
+		$('#example1').DataTable().destroy();
+		var dataTable = $('#example1').DataTable({
+		"autoWidth": false,
+		dom: 'Bfrtip',
+		"scrollX" : true,
+		"processing" : true,
+		"serverSide" : true,
+		"pagingType": "full_numbers",
+		"ajax" : {
+		 url:"<?php echo base_url(); ?>submission/fetch_rec",
+		 type:"POST",
+		 async: false
+		}
+	   });
+	   cto_loading_hide();
+	   table = dataTable;
+	   table.column( 2 ).visible( false );
+	}
  $(document).ready(function(){
 	var table = null;
     fetch_data();
 	
-	
-  function fetch_data(){
-	cto_loading_show();
-	$('#example1').DataTable().destroy();
-    var dataTable = $('#example1').DataTable({
-	"autoWidth": false,
-	dom: 'Bfrtip',
-	"scrollX" : true,
-    "processing" : true,
-    "serverSide" : true,
-	"pagingType": "full_numbers",
-    "ajax" : {
-     url:"<?php echo base_url(); ?>submission/fetch_rec",
-     type:"POST",
-	 async: false
-    }
-   });
-   cto_loading_hide();
-   table = dataTable;
-   table.column( 2 ).visible( false );
-  }
+	function fetch_data(){
+		cto_loading_show();
+		$('#example1').DataTable().destroy();
+		var dataTable = $('#example1').DataTable({
+		"autoWidth": false,
+		dom: 'Bfrtip',
+		"scrollX" : true,
+		"processing" : true,
+		"serverSide" : true,
+		"pagingType": "full_numbers",
+		"ajax" : {
+		 url:"<?php echo base_url(); ?>submission/fetch_rec",
+		 type:"POST",
+		 async: false
+		}
+	   });
+	   cto_loading_hide();
+	   table = dataTable;
+	   table.column( 2 ).visible( false );
+	}
+  
   
   
   $('#example1').on('click', 'tr', function () {
@@ -153,6 +178,8 @@
 	$.redirect("<?php echo base_url(); ?>submission/sendSubmission", {'fk_submission_id': '('+id+')', 'cto_url' : 'submission'});
   });
   
+  
+	
   // var table = $('#example1').DataTable();
 	//table.column( 2 ).visible( false );
 	// table.on( 'order.dt search.dt', function () {
@@ -162,6 +189,45 @@
     // } ).draw();
   
  });
+ function cto_delete(code_id, id, status){
+	 if(status){
+		
+	 }else{
+		 if(confirm("Dengan klik tombol OK/YES, Anda menyetujui ID "+code_id+" untuk dihapus.")){
+			cto_update("<?php echo base_url()."order/delete_submission"; ?>", id, status);
+		}
+	 }
+	 
+  }
+  
+  function cto_update(addr, id, status){
+		cto_loading_show();
+		cto_messages_hide();
+		var data = function () {
+			$.ajax({
+				'async': false,
+				'type': "POST",
+				'global': false,
+				'dataType': 'json',
+				'url': addr,
+				'data': { 'id':  id, 'status' : status},
+				'success': function (data) {
+					cto_loading_hide();
+					if(data['status']){
+						//alert(data['messages']);
+						cto_messages_show(data);
+						//window.location = "<?php echo base_url(); ?>cto_user/creat";
+					}else{
+						//alert(data['messages']);
+						//show error for each fields
+						cto_messages_show(data);
+					}
+				}
+			});
+		}();
+	cto_loading_hide();
+	fetch_data();
+	}
 </script>
 
 <?php $this->load->view('layouts/footer');?>

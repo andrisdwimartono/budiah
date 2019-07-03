@@ -108,6 +108,57 @@ class Order extends MY_Controller {
 		echo json_encode($pesan);
 	}
 	
+	public function delete_submission()
+	{
+		if($_SESSION['position'] != 'Home Service'){
+			$pesan['messages'] = 'Only Home Service who can delete!';
+			$pesan['status'] = false;
+			echo json_encode($pesan);
+			die();
+		}
+		
+		$pesan['status'] = false;
+		$cto_check = true;
+		$approved_status = "Dikembalikan!";
+		
+		if ($this->input->post('id') != "" ) {
+			$data['id'] = $this->input->post('id');
+		}else{
+			$pesan['err_id'] = 'ID cannot be empty!';
+			$cto_check = false;
+		}
+		
+		if ($this->input->post('status') != "" ) {
+			if($this->input->post('status') == 'true'){
+				$data['status'] = 2;
+				$approved_status = "Dikembalikan!";
+			}else{
+				$data['status'] = -2;
+				$approved_status = "Dihapus!";
+			}
+		}else{
+			$pesan['err_status'] = 'Status cannot be empty!';
+			$cto_check = false;
+		}
+
+
+		try{
+			if($cto_check){	
+				$pesan['status'] = true;
+				$id = $data['id'];
+				$this->submission_model->update($id, $data);
+				$pesan['messages'] = $this->submission_model->getAData($id)['code_id']." telah ".$approved_status;
+			}else{
+				$pesan['fn'] = $this->input->post("fn");
+				$pesan['messages'] = 'Errors!';
+			}
+		}catch(Exception $e){
+			$pesan['messages'] = $e->getMessage();
+		}
+		
+		echo json_encode($pesan);
+	}
+	
 	public function status()
 	{
 		$data['coba'] = 'welcome';
@@ -116,20 +167,25 @@ class Order extends MY_Controller {
 		//var_dump($_SESSION['position']);
 	}
 	
-	public function ongoing()
+	public function ongoing($code_id = null)
 	{
 		$data['coba'] = 'welcome';
+		$data['code_id'] = $code_id;
 		$this->view('order/list_ongoing', $data);
 		//$this->view('layouts/content', $data);
 		//var_dump($_SESSION['position']);
 	}
 	
-	public function fetch_ongoing()
+	public function fetch_ongoing($code_id = null)
 	{
 		//if Manager Optima, he can approve the submitted. if the submission were submitted, the submit button will disapear. And the order of submission is not not yet submitted first
 		$keyword = null;
 		if(isset($_POST["search"]["value"])){
 			$keyword = $_POST["search"]["value"];
+		}
+		
+		if(isset($code_id) && $code_id != ""){
+			$keyword = $code_id;
 		}
 		
 		$orders = null;

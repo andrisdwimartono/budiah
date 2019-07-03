@@ -209,7 +209,15 @@
 				var menupack = ajaxGetValue(addr, param);
 				var opt = '';
 				for (i = 0; i < menupack.length; i++) {
+					<?php if(isset($position)){ ?>
+					if(menupack[i][1] == '<?php echo $position; ?>'){
+						opt+='<option value="'+menupack[i][1]+'" selected>'+menupack[i][1]+'</option>';
+					}else{
+					<?php } ?>
 					opt+='<option value="'+menupack[i][1]+'">'+menupack[i][1]+'</option>';
+					<?php if(isset($position)){ ?>
+					}
+					<?php } ?>
 				}
 				document.getElementById(cto_elementid).innerHTML = opt;
 			}

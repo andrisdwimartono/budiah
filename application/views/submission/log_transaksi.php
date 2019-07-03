@@ -142,7 +142,7 @@
 		var prog = "";
 		for(i = 0; i < photoupload.length; i++){
 		prog += "<div class=\"form-group row\">"
-						+"<label for=\"create_odp\" class=\"col-sm-5 control-label\">ODP : "+photoupload[i]['odp_name']+"<font style=\"color:red;\">*</font></br> ID DEPLOYER : "+photoupload[i]['id_deployer']+"</label>"
+						+"<label for=\"create_odp\" class=\"col-sm-5 control-label\">ODP : "+photoupload[i]['odp_name']+"</br> ID DEPLOYER : "+photoupload[i]['id_deployer']+"</label>"
 						+"<div class=\"col-sm-2\">"
 							+"<a href=\"<?php echo base_url(); ?>uploads/"+photoupload[i]['img']+"\" download><img src=\"<?php echo base_url(); ?>uploads/"+photoupload[i]['img']+"\" class=\"img-rounded img-responsive\"></a>"
 						+"</div>"

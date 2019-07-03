@@ -34,6 +34,7 @@
                   <th>Demand</th>
 				  <th>STO</th>
 				  <th>Details</th>
+				  <th>PT Type</th>
                   <th>Status</th>
 				  <th>Action</th>
 				  <th>ID Deployer</th>
@@ -109,7 +110,7 @@ function format ( d, id ) {
 	"pagingType": "full_numbers",
     "order" : [],
     "ajax" : {
-     url:"<?php echo base_url(); ?>order/fetch_ongoing",
+     url:"<?php echo base_url(); ?>order/fetch_ongoing<?php if(isset($code_id)){ echo "/".$code_id; }?>",
      type:"POST",
     }
    });

@@ -39,6 +39,7 @@
                   <th>Demand</th>
 				  <th>STO</th>
 				  <th>Details</th>
+				  <th>PT Type</th>
                   <th>Action</th>
 				  <th>Submit on</th>
                 </tr>

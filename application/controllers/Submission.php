@@ -474,6 +474,44 @@ class Submission extends MY_Controller {
 		echo json_encode($data);
 	}
 	
+	public function check_jaringan($fk_submission_id)
+	{
+		$subs = $this->submission_model->getADataStatus($fk_submission_id);
+		if(empty($subs['pt_type'])){
+			foreach($this->submission_model->getAData($fk_submission_id) as $x => $y){
+				$data[$x] = $y;
+			}
+			$data['fk_submission_id'] = $fk_submission_id;
+			$data['cto_id'] = $fk_submission_id;
+			$this->view('submission/check_jaringan', $data);
+		}else{
+			header('Location: '.base_url().'order/ongoing');
+		}
+	}
+	
+	public function update_jaringan(){
+		$fk_submission_id = $this->input->post('fk_submission_id');
+		$data['pt_type'] = $this->input->post('pt_type');
+		
+		foreach($this->submission_model->getAData($fk_submission_id) as $x => $y){
+				$data[$x] = $y;
+			}
+			
+		if($this->submission_model->update($fk_submission_id, $data)){
+			$pesan['status'] = true;
+			$pesan['messages'] = $data['code_id'].' is saved!';
+		}else{
+			$pesan['status'] = false;
+			$pesan['messages'] = 'Failed to update!';
+		}
+		echo json_encode($pesan);
+	}
+	
+	public function cto_getpt_typeDatas(){
+		$data = $this->submission_model->cto_getpt_typeDatas();
+		echo json_encode($data);
+	}
+	
 	public function KirimPerintahCurl($data){
 		$comp = $this->cto_company_model->getAData($_SESSION['fk_company_id']);
 		//$data['chat_id'] = $chat_group_id;

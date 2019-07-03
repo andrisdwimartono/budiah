@@ -221,14 +221,14 @@
 					if($subm['status'] < 2){
 						$texting .= "\n\nOleh karena status masih belum di-approve dan/atau belum dilakukan insert ID, maka tidak dapat melakukan update progress";
 					}else{
-						$texting .= "\n\nKetuk link perintah dibawah untuk meng-update/ubah progress\n";
+						$texting .= "\n\nKlik link perintah dibawah untuk meng-update/ubah progress\n";
 						$texting .= progressUpdateLink($subm['id'], $subm['status'], $CON);
 					}
 					$message = $texting;
 				}else{
 					$message = 'Submission tidak ditemukan!';
 					//update is_done to 1
-					chatToDone($message_data['chat_id'], $message_data['message_id'], $CON);
+					chatToDone($message_data["chat"]["id"], $message_data['message_id'], $CON);
 				}
 				
 			}elseif(strpos($text, 'BUP') !== false){
@@ -238,7 +238,7 @@
 					if($BUP[3] == 1){
 						if(checkForUpdate($BUP[1], $BUP[2], $CON) && empty(checkImageODP($BUP[1], $CON))){
 							//updating
-							$updated_by = getUserId($chatid, $CON);
+							$updated_by = getUserId($message_data["chat"]["id"], $CON);
 							if(updating("subs.status = ".$BUP[2].", chat_id_telegram = '".$chatid."', updated_by = '".$updated_by."'", $BUP[1],  $CON)){
 								$texting = "";
 								$texting .= getCodeID($BUP[1], $CON)." berhasil diupdate!\n";
@@ -251,14 +251,14 @@
 							$texting .= "/".getCodeID($BUP[1], $CON)." : Kembali\n";
 							$texting .= "/start : Awal\n";
 							$message = $texting;
-							chatToDone($message_data['chat_id'], $message_data['message_id'], $CON);
+							chatToDone($message_data["chat"]["id"], $message_data['message_id'], $CON);
 						}
 					}else{
 						$texting = "";
 						$texting .= "Perintah tidak diketahui\n";
 						$texting .= "/start : Awal\n";
 						$message = $texting;
-						chatToDone($message_data['chat_id'], $message_data['message_id'], $CON);
+						chatToDone($message_data["chat"]["id"], $message_data['message_id'], $CON);
 					}
 				}
 			}
@@ -321,7 +321,7 @@
 		$query = mysqli_query($CON,"SELECT odp.id, odp.id_deployer, odp.LABEL_GOLIVE, coalesce(dict.name, subs.status) status, img.id id_img FROM b_odp odp 
 		INNER JOIN b_submission subs on subs.id = odp.fk_submission_id
 		LEFT JOIN b_img_progress img on img.fk_odp_id = odp.id AND img.status = subs.status+1
-		LEFT JOIN cto_dict dict on dict.code = subs.status+1 and dict.type = 'STATUS_RECOM'
+		LEFT JOIN cto_dict dict on dict.code = subs.status+1 and dict.type = 'STATUS_RECOM' AND (dict.type2 = subs.pt_type or (subs.status+1 <= 2 AND dict.type2 is null))
 		WHERE odp.fk_submission_id = ".$fk_submission_id." AND img.id is null
 		ORDER BY odp.id ASC LIMIT 1");
 		$odp = array();
@@ -461,7 +461,7 @@
 						if($subm['status'] < 2){
 							$texting .= "\n\nOleh karena status masih belum di-approve dan/atau belum dilakukan insert ID, maka tidak dapat melakukan update progress";
 						}else{
-							$texting .= "\n\nKetuk link perintah dibawah untuk meng-update/ubah progress\n";
+							$texting .= "\n\nKlik link perintah dibawah untuk meng-update/ubah progress\n";
 							$texting .= progressUpdateLink($subm['id'], $subm['status'], $CON);
 						}
 						return $texting;
@@ -525,13 +525,24 @@
 	}
 	
 	function progressUpdateLink($id, $status_current, $CON){
+		$pt_type = getPTType($id, $CON);
 		$query = mysqli_query($CON,"SELECT * FROM cto_dict dict
-		WHERE dict.type = 'STATUS_RECOM' and dict.code = (".$status_current."+1)");
+		WHERE dict.type = 'STATUS_RECOM' and dict.code = (".$status_current."+1) and dict.type2 = '".$pt_type."'");
 		$texting = '';
 		while($row = mysqli_fetch_assoc($query)){
 			 $texting .= "/BUP\_".$id."\_".$row['code']." : ".$row['name']."\n";
 		}
 		return $texting;
+	}
+	
+	function getPTType($id, $CON){
+		$query = mysqli_query($CON,"SELECT * FROM b_submission subs
+		WHERE subs.is_active != -1 and subs.id = ".$id);
+		$pt_type = "";
+		while($row = mysqli_fetch_assoc($query)){
+			 $pt_type = $row['pt_type'];
+		}
+		return $pt_type;
 	}
 	
 	function getCodeID($id, $CON){
@@ -593,13 +604,13 @@
 		}
 	}
 	function checkLive($id,  $CON){
-		$query = mysqli_query($CON,"select subs.id, subs.code_id, subs.coordinate, subs.address, subs.potentials, coalesce(subs.odp, CEILING(subs.potentials/2.0)) as odp, sto.name as sto_name, coalesce(dict.name, subs.status) status, coalesce(dictnext.name, subs.status+1) status_next, coalesce(case when subs.status = dictgolive.code then 100 else percen.percentage end, 0) percentage, coalesce(case when subs.status+1 = dictgolive.code then 100 else percen_onwork.percentage end, 0) percentage_onwork, coalesce(subs.updated_time, subs.created_time) as updated_time, odp_lab.LABEL_GOLIVE from b_submission as subs
+		$query = mysqli_query($CON,"select subs.id, subs.code_id, subs.coordinate, subs.address, subs.potentials, coalesce(subs.odp, CEILING(subs.potentials/8.0)) as odp, sto.name as sto_name, coalesce(dict.name, subs.status) status, coalesce(dictnext.name, subs.status+1) status_next, coalesce(case when subs.status = dictgolive.code then 100 else percen.percentage end, 0) percentage, coalesce(case when subs.status+1 = dictgolive.code then 100 else percen_onwork.percentage end, 0) percentage_onwork, coalesce(subs.updated_time, subs.created_time) as updated_time, odp_lab.LABEL_GOLIVE, subs.pt_type from b_submission as subs
 			inner join b_sto sto on sto.id = subs.fk_sto_id
-			left join cto_dict dict on dict.code = subs.status and dict.type = 'STATUS_RECOM'
-			left join cto_dict dictnext on dictnext.code = subs.status+1 and dictnext.type = 'STATUS_RECOM'
-			left join (SELECT dict.code, (dict.code-appr.appr)/jml.jml*100 percentage FROM `cto_dict` dict left join (SELECT count(*) jml FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code > 2) jml on 1=1 left join (SELECT code appr FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code = 2) appr on 1=1 where dict.code > 2 and dict.type = 'STATUS_RECOM') percen on percen.code = subs.status
-			left join (SELECT dict.code, (dict.code-appr.appr)/jml.jml*100 percentage FROM `cto_dict` dict left join (SELECT count(*) jml FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code > 2) jml on 1=1 left join (SELECT code appr FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code = 2) appr on 1=1 where dict.code > 2 and dict.type = 'STATUS_RECOM') percen_onwork on percen_onwork.code = subs.status+1
-			left join cto_dict dictgolive on dictgolive.type = 'STATUS_RECOM' and dictgolive.info = 'GOLIVE'
+			left join cto_dict dict on dict.code = subs.status and dict.type = 'STATUS_RECOM' AND (dict.type2 = subs.pt_type or (subs.status <= 2 AND dict.type2 is null))
+			left join cto_dict dictnext on dictnext.code = subs.status+1 and dictnext.type = 'STATUS_RECOM' AND (dictnext.type2 = subs.pt_type or (subs.status+1 <= 2 AND dictnext.type2 is null))
+			left join (SELECT dict.code, (dict.code-appr.appr)/jml.jml*100 percentage, dict.type2 FROM `cto_dict` dict left join (SELECT count(*) jml, type2 FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code > 2 GROUP BY type2) jml on jml.type2=dict.type2 left join (SELECT code appr FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code = 2) appr on 1=1 where dict.code > 2 and dict.type = 'STATUS_RECOM') percen on percen.code = subs.status and percen.type2 = subs.pt_type
+			left join (SELECT dict.code, (dict.code-appr.appr)/jml.jml*100 percentage, dict.type2 FROM `cto_dict` dict left join (SELECT count(*) jml, type2 FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code > 2 GROUP BY type2) jml on jml.type2=dict.type2 left join (SELECT code appr FROM `cto_dict` WHERE type = 'STATUS_RECOM' AND code = 2) appr on 1=1 where dict.code > 2 and dict.type = 'STATUS_RECOM') percen_onwork on percen_onwork.code = subs.status+1 and percen_onwork.type2 = subs.pt_type
+			left join cto_dict dictgolive on dictgolive.type = 'STATUS_RECOM' and dictgolive.info = 'GOLIVE' AND (dictgolive.type2 = subs.pt_type or (subs.status <= 2 AND dictgolive.type2 is null))
 			left join (SELECT GROUP_CONCAT(odp_lab.LABEL_GOLIVE) LABEL_GOLIVE, odp_lab.fk_submission_id FROM b_odp odp_lab group by odp_lab.fk_submission_id) odp_lab on odp_lab.fk_submission_id = subs.id
 			where subs.status >= 1 and subs.is_active != -1 and subs.id = ".$id);
 		$percentage = 0;

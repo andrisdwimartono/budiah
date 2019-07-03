@@ -22,6 +22,11 @@
             </div>
             <!-- /.box-header -->
             <div class="box-body">
+			<!-- messages box-->
+				<div class="" id="cto_messages">
+					
+				</div>
+				<!-- /.messages box-->
               <!-- CTOF Content here-->
 				<div id="cto_map" style="height: 500px;width: 100%;"></div>
 				<div class="col-sm-6">
@@ -33,11 +38,12 @@
 			  <div class="col-sm-1">
 			  
 			  </div>
-			  <div class="col-sm-3">
+			  <div class="col-sm-4">
 			  <br/>
 				<a href="<?php echo base_url().$cto_url; ?>" class="btn btn-info lime">Table</a>
 				<?php if(isset($is_recomendation)){ ?>
 					<a href="#" onclick="cto_recomend(<?php if(isset($id_subs)){echo $id_subs;}else{echo 0;} ?>);" class="btn btn-info lime">Recomend</a>
+					<a href="#" onclick="cto_delete('', <?php if(isset($id_subs)){echo $id_subs;}else{echo 0;} ?>, false);" class="btn btn-danger lime">Delete Submission</a>
 				<?php } ?>
 				<br/>
 				<br/>
@@ -253,6 +259,46 @@ function setInfow(i){
 	
   
  });
+ function cto_delete(code_id, id, status){
+	 var detail = ajaxGetDetails("<?php echo base_url(); ?>submission/cto_getDetailsData", id);
+	 var code_id = detail['code_id'];
+	 if(status){
+		
+	 }else{
+		 if(confirm("Dengan klik tombol OK/YES, Anda menyetujui ID "+code_id+" untuk dihapus.")){
+			cto_update("<?php echo base_url()."order/delete_submission"; ?>", id, status);
+		}
+	 }
+	 
+  }
+  
+  function cto_update(addr, id, status){
+		cto_loading_show();
+		cto_messages_hide();
+		var data = function () {
+			$.ajax({
+				'async': false,
+				'type': "POST",
+				'global': false,
+				'dataType': 'json',
+				'url': addr,
+				'data': { 'id':  id, 'status' : status},
+				'success': function (data) {
+					cto_loading_hide();
+					if(data['status']){
+						//alert(data['messages']);
+						cto_messages_show(data);
+						//window.location = "<?php echo base_url(); ?>cto_user/creat";
+					}else{
+						//alert(data['messages']);
+						//show error for each fields
+						cto_messages_show(data);
+					}
+				}
+			});
+		}();
+	cto_loading_hide();
+	}
 </script>
 <script async defer
 	src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0F2s2R9-NXMTkfs4BkgoMv5nIfvRbExk&callback=initMap">

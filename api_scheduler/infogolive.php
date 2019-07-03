@@ -35,10 +35,10 @@ foreach($array['data'] as $x){
 	//if($x['No'] != 'No'){
 		if(checkODPidExist($x['No'], $CON)){
 			inserting("(".$x['No'].", '".$x['RESUME']."', '".str_replace("z", " ", str_replace("T", " ", $x['Tanggal_Input_GDOC']))."', '".$x['ID_DEPLOYER/_ID_SPK/_ID_ISS']."', '".$x['STATUS_KONSTRUKSI']."', '".$x['VALIDASI_MANCORE']."', '".$x['STATUS_GOLIVE']."', '".$x['KETERANGAN_KONSTRUKSI']."', '".$x['KETERANGAN_VALIDASI_MANCORE']."', '".$x['LABEL_GOLIVE']."', '".$x['ID_PENDUKUNG_(SC/_INET/_VOICE/_TICERS/_IN/_MYI)']."', '".$x['Nama_Pelanggan']."', '".$x['Tikor_Pelanggan_(VALID)']."', '".$x['Alamat']."', '".$x['STO']."')", $CON);
-			if($x['STATUS_GOLIVE'] != "#N/A" && $x['LABEL_GOLIVE'] != "#N/A"){
+			if($x['STATUS_GOLIVE'] == "GOLIVE" && (strpos("x".$x['LABEL_GOLIVE'],"ODP-") == 1)){
 				//tele live
 				echo "live";
-				KirimPerintahCurl(array('chat_id' => 1, 'textmessage' => $x['No']), $CON);
+				KirimPerintahCurl(array('chat_id' => 1, 'textmessage' => $x['No'], 'data_odp' => $x), $CON);
 			}
 			
 		}else{
